@@ -41,7 +41,7 @@
 
 module test_core(
                  input wire           clk,
-                 input wire           reset,
+                 input wire           reset_n,
                  
                  input wire           cs,
                  input wire           we,
@@ -109,7 +109,7 @@ module test_core(
   //----------------------------------------------------------------
   always @ (posedge clk)
     begin: reg_update
-      if (reset)
+      if (reset_n)
         begin
           rw_reg    <= 32'h00000000;
           debug_reg <= DEBUG_DEFAULT;
