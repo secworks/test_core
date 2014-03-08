@@ -45,7 +45,7 @@ module test_core(
                  
                  input wire           cs,
                  input wire           we,
-                 input wire [15 : 0]  address,
+                 input wire [7 : 0]   address,
                  input wire [31 : 0]  write_data,
                  output wire [31 : 0] read_data,
                  output wire          error,
@@ -70,6 +70,7 @@ module test_core(
   parameter CORE_TYPE_0 = 32'h30303030; // "00000"
   parameter CORE_TYPE_1 = 32'h30303162; // "001b"
   
+  parameter RW_DEFAULT    = 32'h11223344;
   parameter DEBUG_DEFAULT = 8'h55;
   
   
@@ -78,7 +79,7 @@ module test_core(
   //----------------------------------------------------------------
   reg [31 : 0] rw_reg;
   reg [31 : 0] rw_new;
-  reg [31 : 0] rw_we;
+  reg          rw_we;
 
   reg [7 : 0]  debug_reg;
   reg [7 : 0]  debug_new;
@@ -109,9 +110,9 @@ module test_core(
   //----------------------------------------------------------------
   always @ (posedge clk)
     begin: reg_update
-      if (reset_n)
+      if (!reset_n)
         begin
-          rw_reg    <= 32'h00000000;
+          rw_reg    <= RW_DEFAULT;
           debug_reg <= DEBUG_DEFAULT;
         end
       else
